@@ -6,10 +6,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.automigration_roomdb.databinding.ItemsViewBinding
 import com.example.automigration_roomdb.model.User
 
-class MyAdapter() : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+class MyAdapter(val listOfUser : List<User>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
-    var list: ArrayList<User> = ArrayList<User>()
-    val newList: ArrayList<User> = list as ArrayList<User>
+    //var listOfUser = ArrayList<User>()
+    val newList: ArrayList<User> = listOfUser as ArrayList<User>
+
+   /* fun setList(list: ArrayList<User>) {
+
+        listOfUser= list
+        notifyDataSetChanged()
+    }*/
+
 
     class MyViewHolder(private val binding: ItemsViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -28,11 +35,11 @@ class MyAdapter() : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
         )
     }
 
-    override fun getItemCount(): Int = list.size
+    override fun getItemCount(): Int = listOfUser.size
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.apply {
-            val data = list[position]
+            val data = listOfUser[position]
             getAllViewData(data)
         }
     }

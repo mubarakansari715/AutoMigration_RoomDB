@@ -15,12 +15,11 @@ import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private var myAdapter: MyAdapter = MyAdapter()
+    private lateinit var myAdapter: MyAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
 
         binding.btnSubmit.setOnClickListener {
             val edtText = binding.edtText.text.toString()
@@ -28,9 +27,11 @@ class MainActivity : AppCompatActivity() {
                 GlobalScope.launch {
                     appDatabase.getUserDao().insertUser(User(name = edtText))
                 }
-                myAdapter.setNewListData(User(name = edtText))
-                binding.edtText.text?.clear()
-            }else{
+                runOnUiThread {
+                    myAdapter.setNewListData(User(name = edtText))
+                    binding.edtText.text?.clear()
+                }
+            } else {
                 Toast.makeText(this, "Please enter something", Toast.LENGTH_SHORT).show()
             }
         }
@@ -41,11 +42,14 @@ class MainActivity : AppCompatActivity() {
     private fun getAllUserData() {
         binding.apply {
             GlobalScope.launch {
-                val response  = appDatabase.getUserDao().getAllUserDataFromRoomDatabase()
-                Log.e("TAG", "getAllUserData: $response", )
+                val response = appDatabase.getUserDao().getAllUserDataFromRoomDatabase()
+                Log.e("TAG", "getAllUserData: $response")
+                myAdapter = MyAdapter(response)
+               // myAdapter.setList(response as ArrayList<User>)
+                recyclerView.adapter = myAdapter
             }
 
-            recyclerView.adapter = myAdapter
+
         }
     }
 }
