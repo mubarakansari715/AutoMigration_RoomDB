@@ -9,7 +9,7 @@ import com.example.automigration_roomdb.model.User
 class MyAdapter() : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
     var list: ArrayList<User> = ArrayList<User>()
-    private val newList: ArrayList<User> = list as ArrayList<User>
+    val newList: ArrayList<User> = list as ArrayList<User>
 
     class MyViewHolder(private val binding: ItemsViewBinding) :
         RecyclerView.ViewHolder(binding.root) {

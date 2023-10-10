@@ -1,12 +1,16 @@
 package com.example.automigration_roomdb
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.example.automigration_roomdb.BaseApp.Companion.appDatabase
 import com.example.automigration_roomdb.adapter.MyAdapter
 import com.example.automigration_roomdb.databinding.ActivityMainBinding
 import com.example.automigration_roomdb.model.User
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,12 +24,15 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnSubmit.setOnClickListener {
             val edtText = binding.edtText.text.toString()
-
-            Toast.makeText(this, edtText, Toast.LENGTH_SHORT).show()
-           // myAdapter.list
-
-            myAdapter.setNewListData(User(name = edtText))
-            binding.edtText.text?.clear()
+            if (edtText.isNotEmpty()) {
+                GlobalScope.launch {
+                    appDatabase.getUserDao().insertUser(User(name = edtText))
+                }
+                myAdapter.setNewListData(User(name = edtText))
+                binding.edtText.text?.clear()
+            }else{
+                Toast.makeText(this, "Please enter something", Toast.LENGTH_SHORT).show()
+            }
         }
 
         getAllUserData()
@@ -33,6 +40,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun getAllUserData() {
         binding.apply {
+            GlobalScope.launch {
+                val response  = appDatabase.getUserDao().getAllUserDataFromRoomDatabase()
+                Log.e("TAG", "getAllUserData: $response", )
+            }
+
             recyclerView.adapter = myAdapter
         }
     }
