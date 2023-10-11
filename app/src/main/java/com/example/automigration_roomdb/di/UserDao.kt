@@ -14,4 +14,10 @@ interface UserDao {
 
     @Query("select * from user_data")
     fun getAllUserDataFromRoomDatabase(): List<User>
+
+    @Query("Delete from user_data where user_data.id = :id")
+    fun deleteUserById(id: Int)
+
+    @Query("select id from user_data where user_data.name = :name")
+    fun getUserId(name: String):User
 }
