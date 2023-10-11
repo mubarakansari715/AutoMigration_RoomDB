@@ -3,15 +3,18 @@ package com.example.automigration_roomdb.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.automigration_roomdb.utils.ItemClick
 import com.example.automigration_roomdb.databinding.ItemsViewBinding
 import com.example.automigration_roomdb.model.User
+import com.example.automigration_roomdb.utils.ItemClick
+import java.util.Collections
 
 class MyAdapter(var listOfUser: List<User>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
     private val newList: ArrayList<User> = listOfUser as ArrayList<User>
 
     private lateinit var _itemClick: ItemClick
+
+    private var positions: Int = 0
     fun setupOnClickItem(itemClick: ItemClick) {
         _itemClick = itemClick
     }
@@ -37,7 +40,9 @@ class MyAdapter(var listOfUser: List<User>) : RecyclerView.Adapter<MyAdapter.MyV
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.apply {
-            val data = listOfUser[position]
+
+            positions = position
+            val data = listOfUser[positions]
             getAllViewData(data)
 
             binding.imgDeleteIcon.setOnClickListener {
@@ -45,7 +50,7 @@ class MyAdapter(var listOfUser: List<User>) : RecyclerView.Adapter<MyAdapter.MyV
             }
 
             binding.imgEditIcon.setOnClickListener {
-                _itemClick.clickUserEditData(data, position)
+                _itemClick.clickUserEditData(data, positions)
             }
         }
     }
@@ -59,4 +64,12 @@ class MyAdapter(var listOfUser: List<User>) : RecyclerView.Adapter<MyAdapter.MyV
         newList.remove(user)
         notifyDataSetChanged()
     }
+
+    fun onItemMove(fromPosition: Int, toPosition: Int) {
+        // Swap the items in your data list
+        Collections.swap(listOfUser, fromPosition, toPosition)
+        notifyItemMoved(fromPosition, toPosition)
+        positions = toPosition
+    }
+
 }

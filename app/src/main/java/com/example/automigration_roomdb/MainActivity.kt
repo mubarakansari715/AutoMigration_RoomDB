@@ -5,11 +5,13 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.automigration_roomdb.BaseApp.Companion.appDatabase
 import com.example.automigration_roomdb.adapter.MyAdapter
 import com.example.automigration_roomdb.databinding.ActivityMainBinding
 import com.example.automigration_roomdb.model.User
 import com.example.automigration_roomdb.utils.ItemClick
+import com.example.automigration_roomdb.utils.ItemTouchHelperCallback
 import com.example.automigration_roomdb.utils.Utils.hideKeyboard
 import com.example.automigration_roomdb.utils.Utils.showEditTextDialog
 import kotlinx.coroutines.GlobalScope
@@ -54,6 +56,7 @@ class MainActivity : AppCompatActivity(), ItemClick {
                 runOnUiThread {
                     myAdapter = MyAdapter(response)
                     myAdapter.setupOnClickItem(this@MainActivity)
+                    moveItems(myAdapter)
                     recyclerView.adapter = myAdapter
                 }
             }
@@ -93,5 +96,11 @@ class MainActivity : AppCompatActivity(), ItemClick {
                 }
             }
         }
+    }
+
+    private fun moveItems(myAdapter: MyAdapter) {
+        val itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(myAdapter))
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
+
     }
 }
