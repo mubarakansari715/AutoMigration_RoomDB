@@ -14,5 +14,5 @@ data class User(
 
     var phone: String? = "",
 
-    var userId: String? = ""
+    var userId: String? = "",
 )

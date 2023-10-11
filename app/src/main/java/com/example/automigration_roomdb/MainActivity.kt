@@ -13,6 +13,7 @@ import com.example.automigration_roomdb.BaseApp.Companion.appDatabase
 import com.example.automigration_roomdb.adapter.MyAdapter
 import com.example.automigration_roomdb.databinding.ActivityMainBinding
 import com.example.automigration_roomdb.model.User
+import com.example.automigration_roomdb.utils.Utils.showEditTextDialog
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -34,7 +35,6 @@ class MainActivity : AppCompatActivity(), ItemClick {
 
                     runOnUiThread {
                         myAdapter.setNewListData(User(name = edtText, userId = userId))
-                        //getAllUserData()
                         binding.edtText.text?.clear()
                     }
                 }
@@ -62,21 +62,19 @@ class MainActivity : AppCompatActivity(), ItemClick {
         }
     }
 
-    override fun itemClickListener(user: User) {
-        binding.progressCircular.visibility = View.VISIBLE
+    override fun clickUserDeleteData(user: User) {
         GlobalScope.launch {
 
             appDatabase.getUserDao().deleteUserById(user.userId.toString())
 
             runOnUiThread {
                 myAdapter.setNewDeleteListData(user)
-                binding.progressCircular.visibility = View.GONE
                 Toast.makeText(this@MainActivity, user.name.toString(), Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    override fun itemClickDeleteUser(user: User, position: Int) {
+    override fun clickUserEditData(user: User, position: Int) {
         GlobalScope.launch {
 
             runOnUiThread {
@@ -93,21 +91,10 @@ class MainActivity : AppCompatActivity(), ItemClick {
                         myAdapter.listOfUser[position].name = enteredText
                         binding.recyclerView.adapter?.notifyItemChanged(position)
 
-
-
                         GlobalScope.launch {
-
-                            val data = appDatabase.getUserDao().getUserId(user.userId.toString())
-
-                            Log.e("TAG", "itemClickDeleteUser: ${data}")
-
                             appDatabase.getUserDao().updateUser(
-                                User(
-                                    id = data.id,
-                                    name = enteredText,
-                                    phone = data.phone,
-                                    userId = user.userId
-                                )
+                                enteredText,
+                                user.userId.toString()
                             )
                         }
                     }
@@ -115,32 +102,4 @@ class MainActivity : AppCompatActivity(), ItemClick {
             }
         }
     }
-}
-
-
-fun showEditTextDialog(
-    context: Context,
-    title: String,
-    positiveButtonText: String,
-    negativeButtonText: String,
-    userName: String,
-    onPositiveButtonClick: (String) -> Unit,
-) {
-    val editText = EditText(context)
-    editText.setText(userName)
-
-    val dialog = AlertDialog.Builder(context)
-        .setTitle(title)
-        .setView(editText)
-        .setPositiveButton(positiveButtonText) { dialog, which ->
-            val enteredText = editText.text.toString()
-            onPositiveButtonClick(enteredText)
-            dialog.dismiss()
-        }
-        .setNegativeButton(negativeButtonText) { dialog, which ->
-            dialog.cancel()
-        }
-        .create()
-
-    dialog.show()
 }

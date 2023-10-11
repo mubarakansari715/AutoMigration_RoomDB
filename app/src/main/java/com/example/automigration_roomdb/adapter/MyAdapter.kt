@@ -10,15 +10,7 @@ import com.example.automigration_roomdb.model.User
 
 class MyAdapter(var listOfUser: List<User>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
-    //var listOfUser = ArrayList<User>()
-    val newList: ArrayList<User> = listOfUser as ArrayList<User>
-
-    /* fun setList(list: ArrayList<User>) {
-
-         listOfUser= list
-         notifyDataSetChanged()
-     }*/
-
+    private val newList: ArrayList<User> = listOfUser as ArrayList<User>
 
     private lateinit var _itemClick: ItemClick
     fun setupOnClickItem(itemClick: ItemClick) {
@@ -50,11 +42,11 @@ class MyAdapter(var listOfUser: List<User>) : RecyclerView.Adapter<MyAdapter.MyV
             getAllViewData(data)
 
             binding.imgDeleteIcon.setOnClickListener {
-                _itemClick.itemClickListener(data)
+                _itemClick.clickUserDeleteData(data)
             }
 
             binding.imgEditIcon.setOnClickListener {
-                _itemClick.itemClickDeleteUser(data, position)
+                _itemClick.clickUserEditData(data, position)
             }
         }
     }
@@ -66,13 +58,6 @@ class MyAdapter(var listOfUser: List<User>) : RecyclerView.Adapter<MyAdapter.MyV
 
     fun setNewDeleteListData(user: User) {
         newList.remove(user)
-        notifyDataSetChanged()
-    }
-
-    fun setNewUpdateUserData(user: User) {
-        //newList.add(user)
-        Log.e("TAG", "setNewUpdateUserData: $user")
-
         notifyDataSetChanged()
     }
 }

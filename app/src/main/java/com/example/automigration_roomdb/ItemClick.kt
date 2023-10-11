@@ -4,7 +4,7 @@ import com.example.automigration_roomdb.model.User
 
 interface ItemClick {
 
-    fun itemClickListener(user: User)
+    fun clickUserDeleteData(user: User)
 
-    fun itemClickDeleteUser(user: User, position: Int)
+    fun clickUserEditData(user: User, position: Int)
 }
