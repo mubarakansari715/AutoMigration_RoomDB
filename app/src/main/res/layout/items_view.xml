@@ -41,7 +41,7 @@
                     android:layout_marginEnd="10dp"
                     android:src="@android:drawable/ic_menu_edit"
                     android:tint="@color/black"
-                    android:visibility="invisible"
+                    android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="@+id/lblName"
                     app:layout_constraintEnd_toStartOf="@+id/imgDeleteIcon"
                     app:layout_constraintTop_toTopOf="@+id/lblName" />

@@ -1,9 +1,12 @@
 package com.example.automigration_roomdb
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.automigration_roomdb.BaseApp.Companion.appDatabase
@@ -78,4 +81,60 @@ class MainActivity : AppCompatActivity(), ItemClick {
             }
         }
     }
+
+    override fun itemClickDeleteUser(user: User, position: Int) {
+        GlobalScope.launch {
+            val response = appDatabase.getUserDao().getUserId(name = user.name.toString())
+
+            runOnUiThread {
+
+                showEditTextDialog(
+                    context = this@MainActivity,
+                    title = "Enter Text",
+                    positiveButtonText = "OK",
+                    negativeButtonText = "Cancel",
+                    userName = user.name.toString()
+                ) { enteredText ->
+                    // Handle the entered text here
+                    if (enteredText.isNotEmpty()) {
+                        myAdapter.listOfUser[position].name = enteredText
+                        binding.recyclerView.adapter?.notifyItemChanged(position)
+
+                        GlobalScope.launch {
+                            appDatabase.getUserDao()
+                                .updateUser(User(id = response.id, name = enteredText))
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+fun showEditTextDialog(
+    context: Context,
+    title: String,
+    positiveButtonText: String,
+    negativeButtonText: String,
+    userName: String,
+    onPositiveButtonClick: (String) -> Unit,
+) {
+    val editText = EditText(context)
+    editText.setText(userName)
+
+    val dialog = AlertDialog.Builder(context)
+        .setTitle(title)
+        .setView(editText)
+        .setPositiveButton(positiveButtonText) { dialog, which ->
+            val enteredText = editText.text.toString()
+            onPositiveButtonClick(enteredText)
+            dialog.dismiss()
+        }
+        .setNegativeButton(negativeButtonText) { dialog, which ->
+            dialog.cancel()
+        }
+        .create()
+
+    dialog.show()
 }

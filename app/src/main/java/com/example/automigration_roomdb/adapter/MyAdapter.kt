@@ -1,5 +1,6 @@
 package com.example.automigration_roomdb.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,7 +8,7 @@ import com.example.automigration_roomdb.ItemClick
 import com.example.automigration_roomdb.databinding.ItemsViewBinding
 import com.example.automigration_roomdb.model.User
 
-class MyAdapter(val listOfUser : List<User>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
+class MyAdapter(var listOfUser: List<User>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
     //var listOfUser = ArrayList<User>()
     val newList: ArrayList<User> = listOfUser as ArrayList<User>
@@ -51,16 +52,27 @@ class MyAdapter(val listOfUser : List<User>) : RecyclerView.Adapter<MyAdapter.My
             binding.imgDeleteIcon.setOnClickListener {
                 _itemClick.itemClickListener(data)
             }
+
+            binding.imgEditIcon.setOnClickListener {
+                _itemClick.itemClickDeleteUser(data, position)
+            }
         }
     }
 
-    fun setNewListData(list: User) {
-        newList.add(list)
+    fun setNewListData(user: User) {
+        newList.add(user)
         notifyDataSetChanged()
     }
 
-    fun setNewDeleteListData(list: User) {
-        newList.remove(list)
+    fun setNewDeleteListData(user: User) {
+        newList.remove(user)
+        notifyDataSetChanged()
+    }
+
+    fun setNewUpdateUserData(user: User) {
+        //newList.add(user)
+        Log.e("TAG", "setNewUpdateUserData: $user")
+
         notifyDataSetChanged()
     }
 }
