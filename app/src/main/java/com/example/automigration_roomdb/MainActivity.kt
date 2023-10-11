@@ -62,10 +62,14 @@ class MainActivity : AppCompatActivity(), ItemClick {
         binding.progressCircular.visibility = View.VISIBLE
         GlobalScope.launch {
 
-            val response= appDatabase.getUserDao().getUserId(name = user.name.toString())
-            Log.e("TAG", "itemClickListener from db : $response")
+            val userId = if (user.id == 0) {
+                val response = appDatabase.getUserDao().getUserId(name = user.name.toString())
+                response.id
+            } else {
+                user.id
+            }
 
-            appDatabase.getUserDao().deleteUserById(response.id)
+            appDatabase.getUserDao().deleteUserById(userId)
 
             runOnUiThread {
                 myAdapter.setNewDeleteListData(user)
