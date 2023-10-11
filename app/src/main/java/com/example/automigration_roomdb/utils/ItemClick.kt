@@ -1,4 +1,4 @@
-package com.example.automigration_roomdb
+package com.example.automigration_roomdb.utils
 
 import com.example.automigration_roomdb.model.User
 

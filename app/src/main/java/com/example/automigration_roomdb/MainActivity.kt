@@ -9,6 +9,7 @@ import com.example.automigration_roomdb.BaseApp.Companion.appDatabase
 import com.example.automigration_roomdb.adapter.MyAdapter
 import com.example.automigration_roomdb.databinding.ActivityMainBinding
 import com.example.automigration_roomdb.model.User
+import com.example.automigration_roomdb.utils.ItemClick
 import com.example.automigration_roomdb.utils.Utils.hideKeyboard
 import com.example.automigration_roomdb.utils.Utils.showEditTextDialog
 import kotlinx.coroutines.GlobalScope

@@ -1,10 +1,9 @@
 package com.example.automigration_roomdb.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.automigration_roomdb.ItemClick
+import com.example.automigration_roomdb.utils.ItemClick
 import com.example.automigration_roomdb.databinding.ItemsViewBinding
 import com.example.automigration_roomdb.model.User
 
