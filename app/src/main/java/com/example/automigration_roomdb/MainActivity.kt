@@ -9,6 +9,7 @@ import com.example.automigration_roomdb.BaseApp.Companion.appDatabase
 import com.example.automigration_roomdb.adapter.MyAdapter
 import com.example.automigration_roomdb.databinding.ActivityMainBinding
 import com.example.automigration_roomdb.model.User
+import com.example.automigration_roomdb.utils.Utils.hideKeyboard
 import com.example.automigration_roomdb.utils.Utils.showEditTextDialog
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity(), ItemClick {
                     runOnUiThread {
                         myAdapter.setNewListData(User(name = edtText, userId = userId))
                         binding.edtText.text?.clear()
+                        hideKeyboard(this@MainActivity)
                     }
                 }
             } else {
@@ -72,7 +74,7 @@ class MainActivity : AppCompatActivity(), ItemClick {
     override fun clickUserEditData(user: User, position: Int) {
         showEditTextDialog(
             context = this@MainActivity,
-            title = "Enter Text",
+            title = getString(R.string.app_name),
             positiveButtonText = "OK",
             negativeButtonText = "Cancel",
             userName = user.name.toString()
