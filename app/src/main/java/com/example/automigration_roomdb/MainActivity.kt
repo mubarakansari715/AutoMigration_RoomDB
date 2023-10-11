@@ -29,10 +29,11 @@ class MainActivity : AppCompatActivity(), ItemClick {
             val edtText = binding.edtText.text.toString()
             if (edtText.isNotEmpty()) {
                 GlobalScope.launch {
-                    appDatabase.getUserDao().insertUser(User(name = edtText))
+                    val userId = System.currentTimeMillis().toString()
+                    appDatabase.getUserDao().insertUser(User(name = edtText, userId = userId))
 
                     runOnUiThread {
-                        myAdapter.setNewListData(User(name = edtText))
+                        myAdapter.setNewListData(User(name = edtText, userId = userId))
                         //getAllUserData()
                         binding.edtText.text?.clear()
                     }
@@ -65,14 +66,7 @@ class MainActivity : AppCompatActivity(), ItemClick {
         binding.progressCircular.visibility = View.VISIBLE
         GlobalScope.launch {
 
-            val userId = if (user.id == 0) {
-                val response = appDatabase.getUserDao().getUserId(name = user.name.toString())
-                response.id
-            } else {
-                user.id
-            }
-
-            appDatabase.getUserDao().deleteUserById(userId)
+            appDatabase.getUserDao().deleteUserById(user.userId.toString())
 
             runOnUiThread {
                 myAdapter.setNewDeleteListData(user)
@@ -84,7 +78,6 @@ class MainActivity : AppCompatActivity(), ItemClick {
 
     override fun itemClickDeleteUser(user: User, position: Int) {
         GlobalScope.launch {
-            val response = appDatabase.getUserDao().getUserId(name = user.name.toString())
 
             runOnUiThread {
 
@@ -100,9 +93,22 @@ class MainActivity : AppCompatActivity(), ItemClick {
                         myAdapter.listOfUser[position].name = enteredText
                         binding.recyclerView.adapter?.notifyItemChanged(position)
 
+
+
                         GlobalScope.launch {
-                            appDatabase.getUserDao()
-                                .updateUser(User(id = response.id, name = enteredText))
+
+                            val data = appDatabase.getUserDao().getUserId(user.userId.toString())
+
+                            Log.e("TAG", "itemClickDeleteUser: ${data}")
+
+                            appDatabase.getUserDao().updateUser(
+                                User(
+                                    id = data.id,
+                                    name = enteredText,
+                                    phone = data.phone,
+                                    userId = user.userId
+                                )
+                            )
                         }
                     }
                 }

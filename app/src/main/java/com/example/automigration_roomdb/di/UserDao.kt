@@ -16,11 +16,11 @@ interface UserDao {
     @Query("select * from user_data order by user_data.id ASC")
     fun getAllUserDataFromRoomDatabase(): List<User>
 
-    @Query("Delete from user_data where user_data.id = :id")
-    fun deleteUserById(id: Int)
+    @Query("Delete from user_data where user_data.userId = :userId")
+    fun deleteUserById(userId: String)
 
-    @Query("select id from user_data where user_data.name = :name")
-    fun getUserId(name: String):User
+    @Query("select * from user_data where user_data.userId = :userId")
+    fun getUserId(userId: String):User
 
     @Update
     fun updateUser(user: User)
