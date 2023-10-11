@@ -10,13 +10,53 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/lblName"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:cardCornerRadius="10dp"
+            app:cardElevation="3dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="20dp">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/lblName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgEditIcon"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:src="@android:drawable/ic_menu_edit"
+                    android:tint="@color/black"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@+id/lblName"
+                    app:layout_constraintEnd_toStartOf="@+id/imgDeleteIcon"
+                    app:layout_constraintTop_toTopOf="@+id/lblName" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgDeleteIcon"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:src="@android:drawable/ic_delete"
+                    app:layout_constraintBottom_toBottomOf="@+id/imgEditIcon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/imgEditIcon" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -44,12 +44,13 @@ class MainActivity : AppCompatActivity() {
             GlobalScope.launch {
                 val response = appDatabase.getUserDao().getAllUserDataFromRoomDatabase()
                 Log.e("TAG", "getAllUserData: $response")
-                myAdapter = MyAdapter(response)
-               // myAdapter.setList(response as ArrayList<User>)
-                recyclerView.adapter = myAdapter
+
+                runOnUiThread {
+                    myAdapter = MyAdapter(response)
+                    // myAdapter.setList(response as ArrayList<User>)
+                    recyclerView.adapter = myAdapter
+                }
             }
-
-
         }
     }
 }
