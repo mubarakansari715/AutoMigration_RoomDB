@@ -12,5 +12,7 @@ data class User(
 
     var name: String? = "",
 
-    var phone: String? = ""
+    var phone: String? = "",
+
+    var userId: String? = ""
 )
