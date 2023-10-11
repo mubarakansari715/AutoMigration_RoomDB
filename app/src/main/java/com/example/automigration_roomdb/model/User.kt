@@ -10,5 +10,7 @@ data class User(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
 
-    var name: String? = ""
+    var name: String? = "",
+
+    var phone: String? = ""
 )
