@@ -1,12 +1,8 @@
 package com.example.automigration_roomdb
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.EditText
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.automigration_roomdb.BaseApp.Companion.appDatabase
@@ -54,7 +50,6 @@ class MainActivity : AppCompatActivity(), ItemClick {
 
                 runOnUiThread {
                     myAdapter = MyAdapter(response)
-                    // myAdapter.setList(response as ArrayList<User>)
                     myAdapter.setupOnClickItem(this@MainActivity)
                     recyclerView.adapter = myAdapter
                 }
@@ -75,29 +70,23 @@ class MainActivity : AppCompatActivity(), ItemClick {
     }
 
     override fun clickUserEditData(user: User, position: Int) {
-        GlobalScope.launch {
+        showEditTextDialog(
+            context = this@MainActivity,
+            title = "Enter Text",
+            positiveButtonText = "OK",
+            negativeButtonText = "Cancel",
+            userName = user.name.toString()
+        ) { enteredText ->
+            // Handle the entered text here
+            if (enteredText.isNotEmpty()) {
+                myAdapter.listOfUser[position].name = enteredText
+                binding.recyclerView.adapter?.notifyItemChanged(position)
 
-            runOnUiThread {
-
-                showEditTextDialog(
-                    context = this@MainActivity,
-                    title = "Enter Text",
-                    positiveButtonText = "OK",
-                    negativeButtonText = "Cancel",
-                    userName = user.name.toString()
-                ) { enteredText ->
-                    // Handle the entered text here
-                    if (enteredText.isNotEmpty()) {
-                        myAdapter.listOfUser[position].name = enteredText
-                        binding.recyclerView.adapter?.notifyItemChanged(position)
-
-                        GlobalScope.launch {
-                            appDatabase.getUserDao().updateUser(
-                                enteredText,
-                                user.userId.toString()
-                            )
-                        }
-                    }
+                GlobalScope.launch {
+                    appDatabase.getUserDao().updateUser(
+                        enteredText,
+                        user.userId.toString()
+                    )
                 }
             }
         }
