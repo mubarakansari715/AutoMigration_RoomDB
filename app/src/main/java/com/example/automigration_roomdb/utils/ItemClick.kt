@@ -7,4 +7,5 @@ interface ItemClick {
     fun clickUserDeleteData(user: User)
 
     fun clickUserEditData(user: User, position: Int)
+
 }
