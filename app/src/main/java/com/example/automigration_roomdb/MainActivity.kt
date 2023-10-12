@@ -76,6 +76,8 @@ class MainActivity : AppCompatActivity(), ItemClick {
     }
 
     override fun clickUserEditData(user: User, position: Int) {
+
+        Log.e("TAG", "clickUserEditData: position : $position :: data :: $user")
         showEditTextDialog(
             context = this@MainActivity,
             title = getString(R.string.app_name),
@@ -85,8 +87,17 @@ class MainActivity : AppCompatActivity(), ItemClick {
         ) { enteredText ->
             // Handle the entered text here
             if (enteredText.isNotEmpty()) {
-                myAdapter.listOfUser[position].name = enteredText
-                binding.recyclerView.adapter?.notifyItemChanged(position)
+                var indexItem = 0
+
+                for ((index, item) in myAdapter.listOfUser.withIndex()){
+                    if (item.userId == user.userId){
+                        Log.e("TAG", "clickUserEditData: $index", )
+                        indexItem = index
+                    }
+                }
+                myAdapter.listOfUser[indexItem].name = enteredText
+                myAdapter.listOfUser[position].userId = myAdapter.listOfUser[indexItem].userId
+                binding.recyclerView.adapter?.notifyItemChanged(indexItem)
 
                 GlobalScope.launch {
                     appDatabase.getUserDao().updateUser(

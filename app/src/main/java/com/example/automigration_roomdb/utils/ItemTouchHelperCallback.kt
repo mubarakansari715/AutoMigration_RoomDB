@@ -30,4 +30,9 @@ class ItemTouchHelperCallback(private val adapter: MyAdapter) : ItemTouchHelper.
     override fun isLongPressDragEnabled(): Boolean {
         return true
     }
+
+    override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
+        super.clearView(recyclerView, viewHolder)
+
+    }
 }

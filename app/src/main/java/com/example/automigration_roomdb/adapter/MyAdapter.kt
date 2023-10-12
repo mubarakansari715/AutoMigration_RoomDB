@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.automigration_roomdb.databinding.ItemsViewBinding
 import com.example.automigration_roomdb.model.User
 import com.example.automigration_roomdb.utils.ItemClick
+import java.lang.Integer.min
+import java.lang.Math.abs
 import java.util.Collections
 
 class MyAdapter(var listOfUser: List<User>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
@@ -41,8 +43,8 @@ class MyAdapter(var listOfUser: List<User>) : RecyclerView.Adapter<MyAdapter.MyV
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.apply {
 
-            positions = position
-            val data = listOfUser[positions]
+            //positions = position
+            val data = listOfUser[position]
             getAllViewData(data)
 
             binding.imgDeleteIcon.setOnClickListener {
@@ -50,7 +52,7 @@ class MyAdapter(var listOfUser: List<User>) : RecyclerView.Adapter<MyAdapter.MyV
             }
 
             binding.imgEditIcon.setOnClickListener {
-                _itemClick.clickUserEditData(data, positions)
+                _itemClick.clickUserEditData(data, position)
             }
         }
     }
@@ -65,11 +67,27 @@ class MyAdapter(var listOfUser: List<User>) : RecyclerView.Adapter<MyAdapter.MyV
         notifyDataSetChanged()
     }
 
-    fun onItemMove(fromPosition: Int, toPosition: Int) {
+   /* fun onItemMove(fromPosition: Int, toPosition: Int) {
         // Swap the items in your data list
         Collections.swap(listOfUser, fromPosition, toPosition)
         notifyItemMoved(fromPosition, toPosition)
         positions = toPosition
+    }*/
+
+    fun onItemMove(fromPosition: Int, toPosition: Int) {
+        if (fromPosition < toPosition) {
+            for (i in fromPosition until toPosition) {
+                Collections.swap(listOfUser, i, i + 1)
+            }
+        } else {
+            for (i in fromPosition downTo toPosition + 1) {
+                Collections.swap(listOfUser, i, i - 1)
+            }
+        }
+
+        notifyItemMoved(fromPosition, toPosition)
     }
+
+
 
 }
