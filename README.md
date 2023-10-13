@@ -1,7 +1,7 @@
 # AutoMigration_RoomDB
 
 
-1. Before start Auto Migartion Just put this in Gradle
+1. Before starting Auto Migration Just put this in Gradle
 
   defaultConfig {
       ....
@@ -15,7 +15,7 @@
     }
 
 
-2. After you add on AppDatabase class like
+2. After you add an AppDatabase class like
 
    @Database(
     entities = [User::class],
@@ -26,4 +26,5 @@
     )
 abstract class AppDatabase : RoomDatabase() {
 
+Note: After that, you can see the JSON of all query files by version. like 1.json, 2.json
     
