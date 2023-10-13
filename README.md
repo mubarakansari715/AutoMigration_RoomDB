@@ -1,7 +1,7 @@
 # AutoMigration_RoomDB
 
 
-1. Before start Auto Migartion Just put this in Gradle
+1. Before starting Auto Migration Just put this in Gradle
 
   defaultConfig {
       ....
