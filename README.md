@@ -1,7 +1,7 @@
 # AutoMigration_RoomDB
 
 
-1. Before start Auto Migartion Just put this in Gradle
+1. Before start Auto Migration Just put this in Gradle
 
   defaultConfig {
       ....
@@ -25,5 +25,7 @@
 
     )
 abstract class AppDatabase : RoomDatabase() {
+
+Note:: After that you can see auto migration Json file on local. Like 1.Json, 2.Json. This file creating after move your version 1 into 2
 
     
